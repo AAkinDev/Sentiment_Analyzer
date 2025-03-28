@@ -123,4 +123,4 @@ streamlit run app.py
 ### 📱 Connect With Me
 📺 GitHub/GitLab: [@aksquare_dev](https://gitlab.com/aakdev1) / gitlab/aksquare_dev
 👤 LinkedIn: to be updated
-🌐 Portfolio: to be updated
+🌐 Portfolio: to be updated - WIP
