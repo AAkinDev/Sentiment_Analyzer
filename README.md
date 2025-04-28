@@ -1,126 +1,173 @@
-## 📈 Reddit Sentiment Analysis with Pipedream & Streamlit
+# 📈 **Reddit Sentiment Analyzer (Streamlit + HuggingFace AI)**
+<p align="center"> <a href="https://www.python.org/"> <img alt="Python" src="https://img.shields.io/badge/Python-3.9%2B-blue.svg"> </a> <a href="https://streamlit.io/"> <img alt="Streamlit" src="https://img.shields.io/badge/Streamlit-Enabled-brightgreen.svg"> </a> <a href="https://huggingface.co/models/distilgpt2"> <img alt="HuggingFace" src="https://img.shields.io/badge/HuggingFace-DistilGPT2-orange.svg"> </a> <a href="https://opensource.org/licenses/MIT"> <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"> </a> <a href="https://gitlab.com/AkSquare_dev/reddit-sentiment-analysis2"> <img alt="GitLab Repo" src="https://img.shields.io/badge/GitLab-Repo-orange.svg"> </a> </p>
 
-🚀 Automated Reddit sentiment analysis using Pipedream for data collection, Google Sheets/PostgreSQL for storage, and Streamlit for interactive visualization.
+# 🚀 A fully automated Reddit sentiment analysis dashboard using Streamlit, VADER NLP, and HuggingFace Inference API for intelligent AI summaries and insights.
 
-### 🛠️ Project Overview
-This project tracks sentiment on Reddit discussions in real-time using Pipedream automation. The data is processed using NLP sentiment analysis, stored in Google Sheets/PostgreSQL, and visualized in a Streamlit dashboard.
+# 🛠️ **Project Overview**
+This project collects real-time Reddit posts from selected subreddits, analyzes their sentiment using NLP (VADER), and visualizes trends in an interactive Streamlit dashboard. AI-generated insights and recommendations are powered by HuggingFace.
 
-### 💡 Use Cases
-✅ Track public sentiment on AI, tech trends, crypto, or politics
-✅ Monitor brand reputation based on subreddit discussions
-✅ Automate data collection for continuous analysis
+# 💡 **Use Cases**
+✅ Track sentiment trends across topics like technology, AI, crypto, or politics.  
 
-#### 📈 Architecture & Tech Stack
-Component	Technology Used
-Data Collection	🛠️ Pipedream (Reddit API)
-Sentiment Analysis	🧠 TextBlob, Vader (NLP)
+✅ Monitor brand reputation based on subreddit discussions.
 
-#### Storage	
-📊 Google Sheets / PostgreSQL
+✅ Automate collection, analysis, and visualization of Reddit data for decision-making.
 
-### Visualization	
-📈 Streamlit, Plotly
+# 📈 **Architecture & Tech Stack**
+| Component              |                        Technology Used             |
+| Data Collection        | 🔗 Reddit API via PRAW.                            |
+| Sentiment Analysis     | 🧠 VADER SentimentIntensityAnalyzer.               |
+| Visualization          | 📈 Streamlit + Matplotlib + Seaborn                |
+| AI Summaries           | 🤖 HuggingFace Inference API (DistilGPT-2).        |
+| Environment Managemen  | 🌎 Python-dotenv.                                  |
+| AI Summaries           | 🌐 Streamlit Cloud / HuggingFace Spaces (optional) |
 
-#### Deployment	
-🌐 Streamlit Cloud / Hugging Face Spaces
 
-#### 🛠️ Features
-✅ Serverless automation with Pipedream
-✅ Reddit API Integration (PRAW, REST API)
-✅ Sentiment analysis using NLP (TextBlob, Vader)
-✅ Data storage in Google Sheets/PostgreSQL
-✅ Interactive Streamlit Dashboard
-🔄 Workflow Breakdown
+# 🛠️ **Features**
+✅ Reddit API Integration with PRAW
 
-#### 1️⃣ Automating Data Collection with Pipedream
+✅ Real-time Sentiment Analysis using NLP (VADER)
 
-import { axios } from "@pipedream/platform";
+✅ AI-generated Summaries and Actionable Insights
 
-export default defineComponent({
-  async run({ steps }) {
-    const redditUrl = "https://www.reddit.com/r/technology/hot.json?limit=50";
-    const response = await axios(this, { method: "GET", url: redditUrl });
+✅ Clean and interactive Dashboard (Streamlit)
 
-    return response.data.data.children.map(post => ({
-      title: post.data.title,
-      upvotes: post.data.ups
-    }));
-  }
-});
+✅ CSV Export for further analysis
 
-#### 2️⃣ Storing Data in Google Sheets / PostgreSQL
-#### Option 1: Google Sheets
-  - Pipedream sends the processed Reddit data to Google Sheets using the Google Sheets API.
+✅ Beautiful data visualizations (Bar Chart, Pie Chart, WordCloud, Box Plot, Time Series)
 
-#### Option 2: PostgreSQL Database
+# 🔄 **Workflow Breakdown**
 
-CREATE TABLE reddit_sentiment (
-    id SERIAL PRIMARY KEY,
-    post_title TEXT,
-    sentiment_score FLOAT,
-    upvotes INT,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+## 1️⃣ **Reddit Data Collection**
 
-### 3️⃣ Visualization with Streamlit
+import praw
+
+reddit = praw.Reddit(client_id=..., client_secret=..., user_agent=...)
+
+subreddit = reddit.subreddit("technology")
+
+for post in subreddit.hot(limit=50):
+    title = post.title
+    score = post.score
+
+
+## 2️⃣ **Sentiment Analysis with VADER**
+
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+analyzer = SentimentIntensityAnalyzer()
+
+sentiment_score = analyzer.polarity_scores(title)['compound']
+
+## 3️⃣ AI-Powered Summaries using HuggingFace API
+
+import requests
+
+api_token = "your_huggingface_token"
+
+headers = {"Authorization": f"Bearer {api_token}"}
+payload = {"inputs": "Summarize Reddit sentiment analysis results."}
+
+response = requests.post("https://api-inference.huggingface.co/models/distilgpt2", headers=headers, json=payload)
+ai_text = response.json()[0]['generated_text']
+
+## 4️⃣ **Visualization with Streamlit**
 
 import streamlit as st
-import pandas as pd
-import plotly.express as px
 
-st.title("📊 Reddit Sentiment Analysis")
+import matplotlib.pyplot as plt
 
-### Load data
-df = pd.read_csv("reddit_sentiment.csv")
+import seaborn as sns
 
-### Sentiment Distribution Plot
-fig = px.histogram(df, x="Sentiment", nbins=20, title="Sentiment Analysis")
-st.plotly_chart(fig)
+st.title("📈 Reddit Sentiment Analyzer")
 
-### 👨‍💻 How to Run This Project
+st.dataframe(df)
 
-#### 1️⃣ Clone the Repository
-git clone https://gitlab.com/aakdev1/reddit-sentiment-analysis.git
-cd reddit-sentiment-analysis
+sns.countplot(x='sentiment_label', data=df)
 
-#### 2️⃣ Install Dependencies
-pip install praw textblob pandas plotly streamlit
+st.pyplot()
 
-#### 3️⃣ Set Up Environment Variables
-Create a `.env` file and add:
+# 👨‍💻 How to Run This Project
+
+## 1️⃣ Clone the Repository
+
+## 2️⃣ Install Dependencies
+
+pip install -r requirements.txt
+
+## 3️⃣ Set Up Environment Variables
+
+Create a .env file in the root directory:
+
 CLIENT_ID=your_reddit_client_id
+
 CLIENT_SECRET=your_reddit_client_secret
-USER_AGENT=MyRedditSentimentApp
 
-#### 4️⃣ Run Data Collection Script
-python fetch_reddit_data.py
+USER_AGENT=your_app_user_agent
 
-#### 5️⃣ Run Streamlit Dashboard
+USERNAME=your_reddit_username
+
+PASSWORD=your_reddit_password
+
+HUGGINGFACE_API_TOKEN=your_huggingface_api_token
+
+## 4️⃣ Run Streamlit Dashboard
+
 streamlit run app.py
 
+📈 **Results & Insights**
 
-### 📈 Results & Insights
-#### Sample Insights from Reddit Analysis:
-- AI-related posts received highly positive sentiment.
-- Crypto-related discussions were more polarized.
-- Negative sentiment spikes corresponded with controversial news.
+# Sample Insights:
 
-#### 💪 Future Improvements
-✅ Train a custom ML model for more accurate sentiment classification
-✅ Expand to multiple subreddits to track cross-community sentiment
-✅ Use Named Entity Recognition (NER) to extract key topics
-✅ Deploy Streamlit app publicly on Streamlit Cloud / Hugging Face
+- 🚀 AI-related subreddits showed highly positive sentiment.
 
-#### 📚 Contributions
-👥 Contributions are welcome! If you’d like to enhance this project:
-1. Fork the repo
-2. Create a new feature branch
-3. Submit a PR with improvements
+- 💬 Crypto discussions were more polarized.
 
-#### 💎 License
-📚 MIT License - Feel free to use and modify this project.
+- 🔥 Negative sentiment spikes aligned with controversial news events.
 
-### 📱 Connect With Me
-📺 GitHub/GitLab: [@aksquare_dev](https://gitlab.com/aakdev1) / gitlab/aksquare_dev
-👤 LinkedIn: to be updated
-🌐 Portfolio: to be updated - WIP
+
+# 💪 Future Improvements
+
+✅ Expand to multiple subreddit groups for cross-community analysis
+
+✅ Train a custom ML model for even smarter sentiment detection
+
+✅ Deploy fully to Streamlit Cloud / Hugging Face Spaces
+
+✅ Integrate topic extraction (Named Entity Recognition)
+
+# 📚 Contributions
+
+👥 Contributions are welcome!
+
+## Steps to contribute:
+
+- Fork the repo
+
+- Create a feature branch 
+
+- Submit a Merge Request (MR) with improvements
+
+
+
+# 💎 License
+
+📜 MIT License — free to use and modify with attribution.
+
+📱 **Connect With Me**
+
+📺 GitLab: @AkSquare_dev
+
+🌐 Portfolio: WIP
+
+👤 LinkedIn: AkSq AW
+
+# 🔥 Project Badge
+
+Built by Akin A (AkSquare_Dev) 🚀
+
+## 📌 Note
+
+This project is for educational, portfolio, and light production use. For massive-scale deployments, consider adding advanced caching, queueing, and auto-scaling infrastructures.
+
+

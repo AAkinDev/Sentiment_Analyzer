@@ -1,3 +1,10 @@
+streamlit
 praw
 pandas
-TextBlob
+matplotlib
+seaborn
+vaderSentiment
+wordcloud
+torch
+transformers
+python-dotenv
