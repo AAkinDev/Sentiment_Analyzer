@@ -1,0 +1,10 @@
+streamlit
+praw
+pandas
+matplotlib
+seaborn
+vaderSentiment
+wordcloud
+torch
+transformers
+python-dotenv
