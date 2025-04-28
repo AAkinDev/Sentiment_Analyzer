@@ -1,4 +1,6 @@
-📈 **Reddit Sentiment Analyzer (Streamlit + HuggingFace AI)**
+# 📈 **Reddit Sentiment Analyzer (Streamlit + HuggingFace AI)**
+<p align="center"> <a href="https://www.python.org/"> <img alt="Python" src="https://img.shields.io/badge/Python-3.9%2B-blue.svg"> </a> <a href="https://streamlit.io/"> <img alt="Streamlit" src="https://img.shields.io/badge/Streamlit-Enabled-brightgreen.svg"> </a> <a href="https://huggingface.co/models/distilgpt2"> <img alt="HuggingFace" src="https://img.shields.io/badge/HuggingFace-DistilGPT2-orange.svg"> </a> <a href="https://opensource.org/licenses/MIT"> <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"> </a> <a href="https://gitlab.com/AkSquare_dev/reddit-sentiment-analysis2"> <img alt="GitLab Repo" src="https://img.shields.io/badge/GitLab-Repo-orange.svg"> </a> </p>
+
 🚀 A fully automated Reddit sentiment analysis dashboard using Streamlit, VADER NLP, and HuggingFace Inference API for intelligent AI summaries and insights.
 
 🛠️ **Project Overview**
