@@ -7,8 +7,10 @@
 This project collects real-time Reddit posts from selected subreddits, analyzes their sentiment using NLP (VADER), and visualizes trends in an interactive Streamlit dashboard. AI-generated insights and recommendations are powered by HuggingFace.
 
 # 💡 **Use Cases**
-✅ Track sentiment trends across topics like technology, AI, crypto, or politics.
+✅ Track sentiment trends across topics like technology, AI, crypto, or politics.  
+
 ✅ Monitor brand reputation based on subreddit discussions.
+
 ✅ Automate collection, analysis, and visualization of Reddit data for decision-making.
 
 # 📈 **Architecture & Tech Stack**
