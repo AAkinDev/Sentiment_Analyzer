@@ -87,15 +87,15 @@ sns.countplot(x='sentiment_label', data=df)
 
 st.pyplot()
 
-# 👨‍💻 **How to Run This Project**
+# 👨‍💻 How to Run This Project
 
-## 1️⃣ **Clone the Repository**
+## 1️⃣ Clone the Repository
 
-## 2️⃣ **Install Dependencies**
+## 2️⃣ Install Dependencies
 
 pip install -r requirements.txt
 
-## 3️⃣ **Set Up Environment Variables**
+## 3️⃣ Set Up Environment Variables
 
 Create a .env file in the root directory:
 
@@ -111,7 +111,7 @@ PASSWORD=your_reddit_password
 
 HUGGINGFACE_API_TOKEN=your_huggingface_api_token
 
-## 4️⃣ **Run Streamlit Dashboard**
+## 4️⃣ Run Streamlit Dashboard
 
 streamlit run app.py
 
@@ -126,7 +126,7 @@ streamlit run app.py
 - 🔥 Negative sentiment spikes aligned with controversial news events.
 
 
-# 💪 **Future Improvements**
+# 💪 Future Improvements
 
 ✅ Expand to multiple subreddit groups for cross-community analysis
 
@@ -136,7 +136,7 @@ streamlit run app.py
 
 ✅ Integrate topic extraction (Named Entity Recognition)
 
-# 📚** Contributions**
+# 📚 Contributions
 
 👥 Contributions are welcome!
 
@@ -150,7 +150,7 @@ streamlit run app.py
 
 
 
-# 💎 **License**
+# 💎 License
 
 📜 MIT License — free to use and modify with attribution.
 
@@ -162,11 +162,11 @@ streamlit run app.py
 
 👤 LinkedIn: AkSq AW
 
-# 🔥 **Project Badge**
+# 🔥 Project Badge
 
 Built by Akin A (AkSquare_Dev) 🚀
 
-## 📌 **Note**
+## 📌 Note
 
 This project is for educational, portfolio, and light production use. For massive-scale deployments, consider adding advanced caching, queueing, and auto-scaling infrastructures.
 
