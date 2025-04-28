@@ -71,7 +71,7 @@ st.title("📈 Reddit Sentiment Analyzer")
 st.dataframe(df)
 sns.countplot(x='sentiment_label', data=df)
 st.pyplot()
-👨‍💻 How to Run This Project
+👨‍💻 #### **How to Run This Project**
 1️⃣ Clone the Repository
 bash
 Copy
@@ -131,7 +131,7 @@ Submit a Merge Request (MR) with improvements
 📱 Connect With Me
 📺 GitLab: @AkSquare_dev
 
-P🌐 Portfolio: WIP
+🌐 Portfolio: WIP
 
 👤 LinkedIn: AkSq AW
 
