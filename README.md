@@ -25,18 +25,25 @@ This project collects real-time Reddit posts from selected subreddits, analyzes 
 
 # 🛠️ **Features**
 ✅ Reddit API Integration with PRAW
+
 ✅ Real-time Sentiment Analysis using NLP (VADER)
+
 ✅ AI-generated Summaries and Actionable Insights
+
 ✅ Clean and interactive Dashboard (Streamlit)
+
 ✅ CSV Export for further analysis
+
 ✅ Beautiful data visualizations (Bar Chart, Pie Chart, WordCloud, Box Plot, Time Series)
 
 # 🔄 **Workflow Breakdown**
+
 ## 1️⃣ **Reddit Data Collection**
 
 import praw
 
 reddit = praw.Reddit(client_id=..., client_secret=..., user_agent=...)
+
 subreddit = reddit.subreddit("technology")
 
 for post in subreddit.hot(limit=50):
@@ -45,15 +52,19 @@ for post in subreddit.hot(limit=50):
 
 
 ## 2️⃣ **Sentiment Analysis with VADER**
+
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 analyzer = SentimentIntensityAnalyzer()
+
 sentiment_score = analyzer.polarity_scores(title)['compound']
 
 ## 3️⃣ AI-Powered Summaries using HuggingFace API
+
 import requests
 
 api_token = "your_huggingface_token"
+
 headers = {"Authorization": f"Bearer {api_token}"}
 payload = {"inputs": "Summarize Reddit sentiment analysis results."}
 
@@ -61,31 +72,47 @@ response = requests.post("https://api-inference.huggingface.co/models/distilgpt2
 ai_text = response.json()[0]['generated_text']
 
 ## 4️⃣ **Visualization with Streamlit**
+
 import streamlit as st
+
 import matplotlib.pyplot as plt
+
 import seaborn as sns
 
 st.title("📈 Reddit Sentiment Analyzer")
+
 st.dataframe(df)
+
 sns.countplot(x='sentiment_label', data=df)
+
 st.pyplot()
 
 # 👨‍💻 **How to Run This Project**
+
 ## 1️⃣ **Clone the Repository**
 
 ## 2️⃣ **Install Dependencies**
+
 pip install -r requirements.txt
 
 ## 3️⃣ **Set Up Environment Variables**
+
 Create a .env file in the root directory:
+
 CLIENT_ID=your_reddit_client_id
+
 CLIENT_SECRET=your_reddit_client_secret
+
 USER_AGENT=your_app_user_agent
+
 USERNAME=your_reddit_username
+
 PASSWORD=your_reddit_password
+
 HUGGINGFACE_API_TOKEN=your_huggingface_api_token
 
 ## 4️⃣ **Run Streamlit Dashboard**
+
 streamlit run app.py
 
 📈 **Results & Insights**
@@ -93,23 +120,32 @@ streamlit run app.py
 # Sample Insights:
 
 - 🚀 AI-related subreddits showed highly positive sentiment.
+
 - 💬 Crypto discussions were more polarized.
+
 - 🔥 Negative sentiment spikes aligned with controversial news events.
+
 
 # 💪 **Future Improvements**
 
 ✅ Expand to multiple subreddit groups for cross-community analysis
+
 ✅ Train a custom ML model for even smarter sentiment detection
+
 ✅ Deploy fully to Streamlit Cloud / Hugging Face Spaces
+
 ✅ Integrate topic extraction (Named Entity Recognition)
 
 # 📚** Contributions**
 
 👥 Contributions are welcome!
+
 ## Steps to contribute:
 
 - Fork the repo
+
 - Create a feature branch 
+
 - Submit a Merge Request (MR) with improvements
 
 
@@ -127,9 +163,11 @@ streamlit run app.py
 👤 LinkedIn: AkSq AW
 
 # 🔥 **Project Badge**
+
 Built by Akin A (AkSquare_Dev) 🚀
 
 ## 📌 **Note**
+
 This project is for educational, portfolio, and light production use. For massive-scale deployments, consider adding advanced caching, queueing, and auto-scaling infrastructures.
 
 
