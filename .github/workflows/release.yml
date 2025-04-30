@@ -44,5 +44,5 @@ jobs:
           name: "Reddit Sentiment Analyzer v${{ github.ref_name }}"
           body: ${{ env.RELEASE_NOTES }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
