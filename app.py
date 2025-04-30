@@ -222,7 +222,7 @@ if st.button('Analyze') or st.session_state.analyzed:
             st.pyplot(fig_ts)
 
         with tab3:
-            st.subheader('🧠 AI Insights & Actions')
+            st.subheader('🤖 🧠 AI Insights & Actions')
 
             # User-adjustable parameters for AI generation
             col1, col2 = st.columns(2)
