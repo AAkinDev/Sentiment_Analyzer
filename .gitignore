@@ -3,5 +3,5 @@
 .env.example
 __pycache__/
 *.pyc
-.github/workflows*
+.github/*
 
