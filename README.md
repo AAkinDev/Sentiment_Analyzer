@@ -13,14 +13,16 @@ This project collects real-time Reddit posts from selected subreddits, analyzes 
 
 ✅ Automate collection, analysis, and visualization of Reddit data for decision-making.
 
-# 📈 **Architecture & Tech Stack**
-| Component              |                        Technology Used             |
-| Data Collection        | 🔗 Reddit API via PRAW.                            |
-| Sentiment Analysis     | 🧠 VADER SentimentIntensityAnalyzer.               |
-| Visualization          | 📈 Streamlit + Matplotlib + Seaborn                |
-| AI Summaries           | 🤖 HuggingFace Inference API (DistilGPT-2).        |
-| Environment Managemen  | 🌎 Python-dotenv.                                  |
-| AI Summaries           | 🌐 Streamlit Cloud / HuggingFace Spaces (optional) |
+## 📈 Architecture & Tech Stack
+
+| Component              | Technology Used                                         |
+|------------------------|---------------------------------------------------------|
+| Data Collection        | 🔗 Reddit API via PRAW                                  |
+| Sentiment Analysis     | 🧠 VADER SentimentIntensityAnalyzer                     |
+| Visualization          | 📊 Streamlit + Matplotlib + Seaborn                     |
+| AI Summaries           | 🤖 HuggingFace Inference API (DistilGPT-2)              |
+| Env Management         | 🌎 Python-dotenv                                        |
+| Deployment (Optional)  | 🌐 Streamlit Cloud / HuggingFace Spaces                 |
 
 
 # 🛠️ **Features**
