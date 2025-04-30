@@ -1,0 +1,48 @@
+name: 🚀 Auto Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🧱 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: 🧪 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 📝 Generate Release Notes
+        id: release_notes
+        run: |
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "### 🔖 Reddit Sentiment Analyzer v${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+          echo "- ✅ Multi-subreddit input" >> $GITHUB_ENV
+          echo "- 🤖 HuggingFace AI summaries + insights (DistilGPT-2)" >> $GITHUB_ENV
+          echo "- 📊 Dashboard with bar chart, pie chart, wordcloud, box plot, time series" >> $GITHUB_ENV
+          echo "- 📥 Export as CSV" >> $GITHUB_ENV
+          echo "- 🛠 NLP-powered via VADER" >> $GITHUB_ENV
+          echo "- 🧠 Final API-based inference (safe from memory crashes)" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: 🚀 Publish Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Reddit Sentiment Analyzer v${{ github.ref_name }}"
+          body: ${{ env.RELEASE_NOTES }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
