@@ -12,22 +12,26 @@ import os
 import re
 import config
 import time
+from difflib import get_close_matches  # Import for suggesting similar subreddits
 
 # Removed unused imports: datetime
 
 # Helper: clean AI output
 def clean_ai_text(text):
-    text = re.sub(r'\b(\w+)( \1\b)+', r'\1', text)
-    text = re.sub(r'\s+[a-zA-Z]*\.\.\.$', '', text)
-    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r'\b(\w+)( \1\b)+', r'\1', text)  # Remove repeated words
+    text = re.sub(r'(?:\s*\.\s*){2,}', '.', text)  # Remove excessive periods
+    text = re.sub(r'\s+', ' ', text).strip()  # Normalize whitespace
+    text = re.sub(r'(Send a message to the selected subreddit\.)+', 'Send a message to the selected subreddit.', text)  # Remove repetitive phrases
+    text = re.sub(r'(Provide actionable recommendations\.)+', 'Provide actionable recommendations.', text)
+    text = re.sub(r'(Suggest an action based on the current sentiment trends\.)+', 'Suggest an action based on the current sentiment trends.', text)
     if text and not text[0].isupper():
         text = text[0].upper() + text[1:]
     if not text.endswith('.'):
         text += '.'
-    return text.strip()
+    return text
 
 # Helper: HuggingFace API call
-def generate_text_from_huggingface(prompt):
+def generate_text_from_huggingface(prompt, temperature=0.4, max_new_tokens=150):
     api_token = os.getenv("HUGGINGFACE_API_TOKEN")
     if not api_token:
         raise Exception("HuggingFace API token not found. Please set it in your .env file.")
@@ -37,8 +41,8 @@ def generate_text_from_huggingface(prompt):
     payload = {
         "inputs": prompt,
         "parameters": {
-            "max_new_tokens": 150,
-            "temperature": 0.4
+            "max_new_tokens": max_new_tokens,
+            "temperature": temperature
         }
     }
     retries = 3
@@ -59,6 +63,16 @@ def generate_text_from_huggingface(prompt):
                 time.sleep(backoff_factor ** attempt)  # Exponential backoff
             else:
                 raise Exception(f"Error communicating with HuggingFace API after {retries} attempts: {str(e)}")
+
+# Helper: Suggest similar subreddits
+def suggest_subreddits(subreddit_name, reddit_instance, max_suggestions=3):
+    try:
+        # Fetch a list of popular subreddits for suggestions
+        popular_subreddits = [sub.display_name for sub in reddit_instance.subreddits.popular(limit=100)]
+        suggestions = get_close_matches(subreddit_name, popular_subreddits, n=max_suggestions)
+        return suggestions
+    except Exception:
+        return []
 
 # Streamlit Config
 st.set_page_config(page_title="Reddit Sentiment Analyzer", layout="wide")
@@ -94,14 +108,29 @@ if st.button('Analyze') or st.session_state.analyzed:
         subreddits = [sub.strip() for sub in subreddits_input.split(',')]
         posts = []
         for subreddit_name in subreddits:
-            subreddit = Reddit.subreddit(subreddit_name)
-            for submission in subreddit.hot(limit=post_limit):
-                posts.append({
-                    "subreddit": subreddit_name,
-                    "title": submission.title,
-                    "sentiment": analyzer.polarity_scores(submission.title)['compound'],
-                    "created_utc": pd.to_datetime(submission.created_utc, unit='s')
-                })
+            try:
+                subreddit = Reddit.subreddit(subreddit_name)
+                # Check if subreddit exists by accessing its attributes
+                subreddit.id  # This will raise an exception if the subreddit does not exist
+                for submission in subreddit.hot(limit=post_limit):
+                    title = submission.title.strip() if submission.title and submission.title.strip() else "No Title Available"
+                    # Refined regex to remove unintended IDs or artifacts
+                    title = re.sub(r'\b[0-9a-z]{5}\b', '', title).strip()
+                    title = re.sub(r'\s{2,}', ' ', title)  # Remove extra spaces
+                    posts.append({
+                        "subreddit": subreddit.display_name,  # Use subreddit name instead of ID
+                        "title": title,  # Cleaned title
+                        "sentiment": analyzer.polarity_scores(title)['compound'],
+                        "created_utc": pd.to_datetime(submission.created_utc, unit='s')
+                    })
+            except prawcore.exceptions.NotFound:  # Corrected exception module
+                suggestions = suggest_subreddits(subreddit_name, Reddit)
+                if suggestions:
+                    st.error(f"⚠️ Subreddit '{subreddit_name}' does not exist. Did you mean: {', '.join(suggestions)}?")
+                else:
+                    st.error(f"⚠️ Subreddit '{subreddit_name}' does not exist, and no similar subreddits were found.")
+            except Exception as e:
+                st.error(f"⚠️ An error occurred while fetching data for subreddit '{subreddit_name}': {str(e)}")
 
     time.sleep(0.5)
     st.success('✅ Analysis Complete!')
@@ -115,7 +144,7 @@ if st.button('Analyze') or st.session_state.analyzed:
 
         selected_sentiment = st.radio("Select Sentiment to View:", ("All", "Positive", "Neutral", "Negative"), horizontal=True)
 
-        tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "📈 Dashboard", "🧠 AI Insights", "🧠 Actionable Insights"])
+        tab1, tab2, tab3 = st.tabs(["📊 Overview", "📈 Dashboard", "🧠 AI Insights & Actions"])
 
         with tab1:
             st.subheader('📊 Sentiment Analysis Overview')
@@ -193,35 +222,59 @@ if st.button('Analyze') or st.session_state.analyzed:
             st.pyplot(fig_ts)
 
         with tab3:
-            st.subheader('🧠 AI-Generated Insights')
+            st.subheader('🧠 AI Insights & Actions')
+
+            # User-adjustable parameters for AI generation
+            col1, col2 = st.columns(2)
+            with col1:
+                temperature = st.slider("Creativity (Temperature)", 0.1, 1.0, 0.4, step=0.1)
+            with col2:
+                max_tokens = st.slider("Max Tokens", 50, 300, 150, step=10)
+
+            # Generate AI Summary
             if st.button('Generate AI Summary', key='ai_summary'):
                 try:
                     prompt = (
-                        f"You are a market analyst. Based on the Reddit sentiment analysis: "
-                        f"{sentiment_counts.get('Positive', 0)} positive, "
-                        f"{sentiment_counts.get('Neutral', 0)} neutral, and "
-                        f"{sentiment_counts.get('Negative', 0)} negative posts. "
-                        "Generate a concise insight or recommendation."
+                        f"Analyze Reddit sentiment: {sentiment_counts.get('Positive', 0)} positive, "
+                        f"{sentiment_counts.get('Neutral', 0)} neutral, and {sentiment_counts.get('Negative', 0)} negative posts. "
+                        f"Subreddits: {', '.join(subreddits)}. Provide insights and actionable recommendations."
                     )
-                    ai_text = generate_text_from_huggingface(prompt)
-                    st.write(clean_ai_text(ai_text))
+                    for attempt in range(3):
+                        try:
+                            ai_text = generate_text_from_huggingface(prompt, temperature, max_tokens)
+                            st.write(clean_ai_text(ai_text))
+                            break
+                        except Exception as e:
+                            if attempt < 2:
+                                time.sleep(2 ** attempt)
+                            else:
+                                raise e
                 except Exception as e:
                     st.error(f"⚠️ AI Summary generation failed: {str(e)}")
 
-        with tab4:
-            st.subheader('🧠 Generate Actionable Insights')
+            # Generate Actionable Insights
             user_prompt = st.text_input('Ask for an insight based on the analysis:', 'Suggest an action based on the current sentiment trends.')
-            if st.button('Generate Insight', key='actionable_insight'):
+            if st.button('Generate Actionable Insight', key='actionable_insight'):
                 try:
                     full_prompt = (
-                        f"Sentiment counts: Positive={sentiment_counts.get('Positive',0)}, "
-                        f"Neutral={sentiment_counts.get('Neutral',0)}, Negative={sentiment_counts.get('Negative',0)}. "
-                        f"{user_prompt}"
+                        f"Sentiment counts: Positive={sentiment_counts.get('Positive', 0)}, "
+                        f"Neutral={sentiment_counts.get('Neutral', 0)}, Negative={sentiment_counts.get('Negative', 0)}. "
+                        f"Subreddits: {', '.join(subreddits)}. {user_prompt} Provide actionable recommendations."
                     )
-                    ai_text = generate_text_from_huggingface(full_prompt)
-                    st.write(clean_ai_text(ai_text))
+                    ai_text = generate_text_from_huggingface(full_prompt, temperature, max_tokens)
+                    cleaned_text = clean_ai_text(ai_text)  # Ensure the text is cleaned
+                    st.subheader("Generated Actionable Insight:")
+                    st.write(cleaned_text)  # Display the cleaned actionable insight
                 except Exception as e:
                     st.error(f"⚠️ Insight generation failed: {str(e)}")
+                else:
+                    st.success("✅ Actionable insight generated successfully!")
+
+            # Feedback Section
+            st.subheader("Feedback")
+            feedback = st.text_area("Provide feedback on the generated insights:", "")
+            if st.button("Submit Feedback"):
+                st.success("Thank you for your feedback!")
 
         # Footer
         st.markdown("""
