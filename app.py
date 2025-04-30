@@ -41,13 +41,24 @@ def generate_text_from_huggingface(prompt):
             "temperature": 0.4
         }
     }
-    try:
-        response = requests.post(API_URL, headers=headers, json=payload)
-        response.raise_for_status()
-        generated = response.json()
-        return generated[0]['generated_text']
-    except requests.exceptions.RequestException as e:
-        raise Exception(f"Error communicating with HuggingFace API: {str(e)}")
+    retries = 3
+    backoff_factor = 2
+
+    for attempt in range(retries):
+        try:
+            response = requests.post(API_URL, headers=headers, json=payload)
+            response.raise_for_status()
+            generated = response.json()
+            # Ensure the response is parsed correctly
+            if isinstance(generated, list) and len(generated) > 0 and 'generated_text' in generated[0]:
+                return generated[0]['generated_text']
+            else:
+                raise Exception("Unexpected response format from HuggingFace API.")
+        except requests.exceptions.RequestException as e:
+            if attempt < retries - 1:
+                time.sleep(backoff_factor ** attempt)  # Exponential backoff
+            else:
+                raise Exception(f"Error communicating with HuggingFace API after {retries} attempts: {str(e)}")
 
 # Streamlit Config
 st.set_page_config(page_title="Reddit Sentiment Analyzer", layout="wide")
