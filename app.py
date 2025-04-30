@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from collections import Counter
-from datetime import datetime
 from wordcloud import WordCloud
 import requests
 from dotenv import load_dotenv
@@ -13,6 +12,8 @@ import os
 import re
 import config
 import time
+
+# Removed unused imports: datetime
 
 # Helper: clean AI output
 def clean_ai_text(text):
@@ -40,10 +41,13 @@ def generate_text_from_huggingface(prompt):
             "temperature": 0.4
         }
     }
-    response = requests.post(API_URL, headers=headers, json=payload)
-    response.raise_for_status()
-    generated = response.json()
-    return generated[0]['generated_text']
+    try:
+        response = requests.post(API_URL, headers=headers, json=payload)
+        response.raise_for_status()
+        generated = response.json()
+        return generated[0]['generated_text']
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Error communicating with HuggingFace API: {str(e)}")
 
 # Streamlit Config
 st.set_page_config(page_title="Reddit Sentiment Analyzer", layout="wide")
@@ -203,19 +207,16 @@ if st.button('Analyze') or st.session_state.analyzed:
                         f"Neutral={sentiment_counts.get('Neutral',0)}, Negative={sentiment_counts.get('Negative',0)}. "
                         f"{user_prompt}"
                     )
-                    try:
-                        ai_text = generate_text_from_huggingface(prompt)
-                        st.write(clean_ai_text(ai_text))
-                    except Exception as e:
-                        st.error(f"⚠️ AI Summary generation failed: {str(e)}\n\n🔁 Try again in a few minutes.")
-                    else:
-                        st.warning('⚠️ No data yet. Please click Analyze to start.')
+                    ai_text = generate_text_from_huggingface(full_prompt)
+                    st.write(clean_ai_text(ai_text))
+                except Exception as e:
+                    st.error(f"⚠️ Insight generation failed: {str(e)}")
 
-# Footer
-st.markdown("""
----
-<div style='text-align: center; font-size: 1.0em;'>
-    By Akin A (AkSquare_Dev)
-</div>
-""", unsafe_allow_html=True)
+        # Footer
+        st.markdown("""
+        ---
+        <div style='text-align: center; font-size: 1.0em;'>
+            By Akin A (AkSquare_Dev)
+        </div>
+        """, unsafe_allow_html=True)
 
