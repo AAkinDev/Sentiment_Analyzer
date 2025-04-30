@@ -208,9 +208,8 @@ if st.button('Analyze') or st.session_state.analyzed:
                         st.write(clean_ai_text(ai_text))
                     except Exception as e:
                         st.error(f"⚠️ AI Summary generation failed: {str(e)}\n\n🔁 Try again in a few minutes.")
-
-else:
-    st.warning('⚠️ No data yet. Please click Analyze to start.')
+                    else:
+                        st.warning('⚠️ No data yet. Please click Analyze to start.')
 
 # Footer
 st.markdown("""
