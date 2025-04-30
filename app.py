@@ -203,10 +203,12 @@ if st.button('Analyze') or st.session_state.analyzed:
                         f"Neutral={sentiment_counts.get('Neutral',0)}, Negative={sentiment_counts.get('Negative',0)}. "
                         f"{user_prompt}"
                     )
-                    ai_text = generate_text_from_huggingface(full_prompt)
-                    st.write(clean_ai_text(ai_text))
-                except Exception as e:
-                    st.error(f"⚠️ Insight generation failed: {str(e)}")
+                    try:
+                        ai_text = generate_text_from_huggingface(prompt)
+                        st.write(clean_ai_text(ai_text))
+                    except Exception as e:
+                        st.error(f"⚠️ AI Summary generation failed: {str(e)}\n\n🔁 Try again in a few minutes.")
+
 else:
     st.warning('⚠️ No data yet. Please click Analyze to start.')
 
