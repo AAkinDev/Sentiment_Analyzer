@@ -100,7 +100,7 @@ if st.button('Analyze') or st.session_state.analyzed:
 
         selected_sentiment = st.radio("Select Sentiment to View:", ("All", "Positive", "Neutral", "Negative"), horizontal=True)
 
-        tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "📈 Dashboard", "�� AI Insights", "🧠 Actionable Insights"])
+        tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "📈 Dashboard", "🧠 AI Insights", "🧠 Actionable Insights"])
 
         with tab1:
             st.subheader('📊 Sentiment Analysis Overview')
