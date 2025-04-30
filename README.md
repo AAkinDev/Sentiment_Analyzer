@@ -1,12 +1,12 @@
 # 📈 **Reddit Sentiment Analyzer (Streamlit + HuggingFace AI)**
 <p align="center"> <a href="https://www.python.org/"> <img alt="Python" src="https://img.shields.io/badge/Python-3.9%2B-blue.svg"> </a> <a href="https://streamlit.io/"> <img alt="Streamlit" src="https://img.shields.io/badge/Streamlit-Enabled-brightgreen.svg"> </a> <a href="https://huggingface.co/models/distilgpt2"> <img alt="HuggingFace" src="https://img.shields.io/badge/HuggingFace-DistilGPT2-orange.svg"> </a> <a href="https://opensource.org/licenses/MIT"> <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"> </a> <a href="https://gitlab.com/AkSquare_dev/reddit-sentiment-analysis2"> <img alt="GitLab Repo" src="https://img.shields.io/badge/GitLab-Repo-orange.svg"> </a> </p>
 
-# 🚀 A fully automated Reddit sentiment analysis dashboard using Streamlit, VADER NLP, and HuggingFace Inference API for intelligent AI summaries and insights.
+### 🚀 A fully automated Reddit sentiment analysis dashboard using Streamlit, VADER NLP, and HuggingFace Inference API for intelligent AI summaries and insights.
 
-# 🛠️ **Project Overview**
+## 🛠️ **Project Overview**
 This project collects real-time Reddit posts from selected subreddits, analyzes their sentiment using NLP (VADER), and visualizes trends in an interactive Streamlit dashboard. AI-generated insights and recommendations are powered by HuggingFace.
 
-# 💡 **Use Cases**
+## 💡 **Use Cases**
 ✅ Track sentiment trends across topics like technology, AI, crypto, or politics.  
 
 ✅ Monitor brand reputation based on subreddit discussions.
@@ -25,7 +25,7 @@ This project collects real-time Reddit posts from selected subreddits, analyzes 
 | Deployment (Optional)  | 🌐 Streamlit Cloud / HuggingFace Spaces                 |
 
 
-# 🛠️ **Features**
+## 🛠️ **Features**
 ✅ Reddit API Integration with PRAW
 
 ✅ Real-time Sentiment Analysis using NLP (VADER)
@@ -38,9 +38,9 @@ This project collects real-time Reddit posts from selected subreddits, analyzes 
 
 ✅ Beautiful data visualizations (Bar Chart, Pie Chart, WordCloud, Box Plot, Time Series)
 
-# 🔄 **Workflow Breakdown**
+## 🔄 **Workflow Breakdown**
 
-## 1️⃣ **Reddit Data Collection**
+### 1️⃣ **Reddit Data Collection**
 
 import praw
 
@@ -53,7 +53,7 @@ for post in subreddit.hot(limit=50):
     score = post.score
 
 
-## 2️⃣ **Sentiment Analysis with VADER**
+### 2️⃣ **Sentiment Analysis with VADER**
 
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
@@ -61,7 +61,7 @@ analyzer = SentimentIntensityAnalyzer()
 
 sentiment_score = analyzer.polarity_scores(title)['compound']
 
-## 3️⃣ AI-Powered Summaries using HuggingFace API
+### 3️⃣ AI-Powered Summaries using HuggingFace API
 
 import requests
 
@@ -73,7 +73,7 @@ payload = {"inputs": "Summarize Reddit sentiment analysis results."}
 response = requests.post("https://api-inference.huggingface.co/models/distilgpt2", headers=headers, json=payload)
 ai_text = response.json()[0]['generated_text']
 
-## 4️⃣ **Visualization with Streamlit**
+### 4️⃣ **Visualization with Streamlit**
 
 import streamlit as st
 
@@ -89,15 +89,15 @@ sns.countplot(x='sentiment_label', data=df)
 
 st.pyplot()
 
-# 👨‍💻 How to Run This Project
+## 👨‍💻 How to Run This Project
 
-## 1️⃣ Clone the Repository
+### 1️⃣ Clone the Repository
 
-## 2️⃣ Install Dependencies
+### 2️⃣ Install Dependencies
 
 pip install -r requirements.txt
 
-## 3️⃣ Set Up Environment Variables
+### 3️⃣ Set Up Environment Variables
 
 Create a .env file in the root directory:
 
@@ -113,13 +113,13 @@ PASSWORD=your_reddit_password
 
 HUGGINGFACE_API_TOKEN=your_huggingface_api_token
 
-## 4️⃣ Run Streamlit Dashboard
+### 4️⃣ Run Streamlit Dashboard
 
 streamlit run app.py
 
 📈 **Results & Insights**
 
-# Sample Insights:
+## Sample Insights:
 
 - 🚀 AI-related subreddits showed highly positive sentiment.
 
@@ -128,7 +128,7 @@ streamlit run app.py
 - 🔥 Negative sentiment spikes aligned with controversial news events.
 
 
-# 💪 Future Improvements
+## 💪 Future Improvements
 
 ✅ Expand to multiple subreddit groups for cross-community analysis
 
@@ -138,11 +138,11 @@ streamlit run app.py
 
 ✅ Integrate topic extraction (Named Entity Recognition)
 
-# 📚 Contributions
+## 📚 Contributions
 
 👥 Contributions are welcome!
 
-## Steps to contribute:
+### Steps to contribute:
 
 - Fork the repo
 
@@ -150,21 +150,19 @@ streamlit run app.py
 
 - Submit a Merge Request (MR) with improvements
 
-
-
-# 💎 License
+## 💎 License
 
 📜 MIT License — free to use and modify with attribution.
 
-📱 **Connect With Me**
+📱 ### Connect With Me
 
-📺 GitLab: @AkSquare_dev
+👨🏽‍💻 :Git:LH @AkSquare_dev @AAkinDev 
 
 🌐 Portfolio: WIP
 
-👤 LinkedIn: AkSq AW
+👤 LinkedIn: AkSq 
 
-# 🔥 Project Badge
+## 🔥 Project Badge
 
 Built by Akin A (AkSquare_Dev) 🚀
 
