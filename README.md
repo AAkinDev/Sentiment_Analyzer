@@ -1,5 +1,18 @@
 # 📈 **Reddit Sentiment Analyzer (Streamlit + HuggingFace AI)**
-<p align="center"> <a href="https://www.python.org/"> <img alt="Python" src="https://img.shields.io/badge/Python-3.9%2B-blue.svg"> </a> <a href="https://streamlit.io/"> <img alt="Streamlit" src="https://img.shields.io/badge/Streamlit-Enabled-brightgreen.svg"> </a> <a href="https://huggingface.co/models/distilgpt2"> <img alt="HuggingFace" src="https://img.shields.io/badge/HuggingFace-DistilGPT2-orange.svg"> </a> <a href="https://opensource.org/licenses/MIT"> <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"> </a> <a href="https://gitlab.com/AkSquare_dev/reddit-sentiment-analysis2"> <img alt="GitLab Repo" src="https://img.shields.io/badge/GitLab-Repo-orange.svg"> </a> </p>
+
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![HuggingFace](https://img.shields.io/badge/HuggingFace-FF6B6B?style=for-the-badge&logo=huggingface&logoColor=white)](https://huggingface.co/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg?style=flat-square)](https://www.python.org/downloads/)
+[![Status](https://img.shields.io/badge/status-production%20ready-brightgreen.svg?style=flat-square)](https://github.com/AAkinDev/Sentiment_Analyzer)
+[![Deploy](https://img.shields.io/badge/deploy-Streamlit%20Cloud-red?style=flat-square&logo=streamlit)](https://streamlit.io/cloud)
+
+[![NLP](https://img.shields.io/badge/NLP-VADER%20Sentiment-blue?style=flat-square&logo=natural-language-processing)](https://github.com/cjhutto/vaderSentiment)
+[![Data](https://img.shields.io/badge/Data-Pandas%20%2B%20Matplotlib-blue?style=flat-square&logo=pandas)](https://pandas.pydata.org/)
+[![AI](https://img.shields.io/badge/AI-DistilGPT%2D2-purple?style=flat-square&logo=artificial-intelligence)](https://huggingface.co/distilgpt2)
 
 ### 🚀 A fully automated Reddit sentiment analysis dashboard using Streamlit, VADER NLP, and HuggingFace Inference API for intelligent AI summaries and insights.
 
