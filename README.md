@@ -12,7 +12,7 @@
 
 [![NLP](https://img.shields.io/badge/NLP-VADER%20Sentiment-blue?style=flat-square&logo=natural-language-processing)](https://github.com/cjhutto/vaderSentiment)
 [![Data](https://img.shields.io/badge/Data-Pandas%20%2B%20Matplotlib-blue?style=flat-square&logo=pandas)](https://pandas.pydata.org/)
-[![AI](https://img.shields.io/badge/AI-DistilGPT%2D2-purple?style=flat-square&logo=artificial-intelligence)](https://huggingface.co/distilgpt2)
+[![AI](https://img.shields.io/badge/AI-DistilGPT%2D2-purple?style=flat-square)](https://huggingface.co/distilgpt2)
 
 ### 🚀 A fully automated Reddit sentiment analysis dashboard using Streamlit, VADER NLP, and HuggingFace Inference API for intelligent AI summaries and insights.
 
